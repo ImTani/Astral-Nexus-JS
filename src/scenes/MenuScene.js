@@ -31,16 +31,9 @@ export class MenuScene extends Scene {
     const padding = Math.floor((this.terminal.getCols() - text.length) / 2);
     const spaces = ' '.repeat(padding);
     
+    // Always draw option in the same style
     if (isSelected) {
       this.terminal.write(this.centerText(`${this.options.colorScheme.selectedOption}${text}\x1b[0m\r\n`));
-      
-      // Draw description for selected option
-      if (MENU_DESCRIPTIONS && MENU_DESCRIPTIONS[option]) {
-        const desc = MENU_DESCRIPTIONS[option];
-        const descPadding = Math.floor((this.terminal.getCols() - desc.length) / 2);
-        const descSpaces = ' '.repeat(descPadding);
-        this.terminal.write(this.centerText(`${this.options.colorScheme.description}${desc}\x1b[0m\r\n`));
-      }
     } else {
       this.terminal.write(this.centerText(`${this.options.colorScheme.unselectedOption}${text}\x1b[0m\r\n`));
     }
@@ -63,8 +56,23 @@ export class MenuScene extends Scene {
       this.drawOption(option, index);
     });
 
-    // Draw instructions at the bottom
+    // Add an extra line after menu options
     this.terminal.write('\r\n');
+
+    // Draw description for selected option in a separate section
+    const selectedOption = MENU_OPTIONS[this.selectedIndex];
+    if (MENU_DESCRIPTIONS && MENU_DESCRIPTIONS[selectedOption]) {
+      const desc = MENU_DESCRIPTIONS[selectedOption];
+      this.terminal.write(this.centerText(`${this.options.colorScheme.description}${desc}\x1b[0m\r\n`));
+    } else {
+      // Keep the line empty if no description
+      this.terminal.write('\r\n');
+    }
+
+    // Add extra line before instructions
+    this.terminal.write('\r\n');
+
+    // Draw instructions at the bottom
     const instructions = "Use ↑↓ arrows to navigate, ENTER to select";
     this.terminal.write(this.centerText(`${this.options.colorScheme.instructions}${instructions}\x1b[0m\r\n`));
   }

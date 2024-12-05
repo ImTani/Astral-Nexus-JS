@@ -117,7 +117,7 @@ export class GameTerminal {
   }
 
   // New methods for more advanced terminal interactions
-  typeWriter(text, speed = 50) {
+  typeWriter(text, speed = 2000) {
     return new Promise(resolve => {
       let i = 0;
       const typeNextChar = () => {

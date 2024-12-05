@@ -14,25 +14,50 @@ export class AdventureScene extends Scene {
     this.gameState = GameState.getInstance();
   }
 
-  draw() {
+  async draw() {
     this.terminal.clear();
     
-    // Display narrative
-    this.terminal.write(formatText(this.narrative) + '\r\n\r\n');
-
-    // Display available choices
+    // Add padding and border-like effect
+    const cols = this.terminal.getCols();
+    const borderChar = '═';
+    const sidePadding = '║ ';
+    const border = borderChar.repeat(cols);
+    
+    // Draw top border
+    this.terminal.writeLine(`┌${border}┐`, { color: 244 });
+    
+    // Add some vertical padding
+    this.terminal.writeLine(sidePadding.padEnd(cols + 2), { color: 244 });
+    
+    // Use typewriter effect for narrative
+    await this.terminal.typeWriter(
+      `${sidePadding}${formatText(this.narrative)}`, 
+      { color: 7 }
+    );
+    this.terminal.writeLine('', { color: 244 });
+    
+    // Add spacing
+    this.terminal.writeLine(sidePadding.padEnd(cols + 2), { color: 244 });
+    
+    // Display available choices with a different styling
     const availableChoices = this.choices.filter(choice => 
       !choice.condition || choice.condition(this.gameState)
     );
 
     availableChoices.forEach((choice, index) => {
       const number = index + 1;
-      const text = `${number}. ${choice.text}`;
-      this.terminal.write(`\x1b[37m${text}\x1b[0m\r\n`);
+      const text = `${sidePadding}${number}. ${choice.text}`;
+      this.terminal.writeLine(text, { color: 251 });
     });
-
-    // Display instructions
-    this.terminal.write('\r\n\x1b[90mEnter a number to choose, or ESC for menu\x1b[0m\r\n');
+    
+    // Add bottom spacing
+    this.terminal.writeLine(sidePadding.padEnd(cols + 2), { color: 244 });
+    
+    // Draw bottom border
+    this.terminal.writeLine(`└${border}┘`, { color: 244 });
+    
+    // Display instructions with a subtle color
+    this.terminal.writeLine('\r\nEnter a number to choose, or ESC for menu', { color: 240 });
   }
 
   handleInput(key) {

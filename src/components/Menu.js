@@ -57,8 +57,10 @@ export class Menu {
       this.drawOption(option, index);
     });
 
-    // Draw description for selected option
+    // Add an extra empty line after menu options
     this.terminal.writeLine('');
+
+    // Draw description for selected option in a separate section
     const selectedOption = MENU_OPTIONS[this.selectedIndex];
     if (MENU_DESCRIPTIONS && MENU_DESCRIPTIONS[selectedOption]) {
       const desc = MENU_DESCRIPTIONS[selectedOption];
@@ -70,8 +72,10 @@ export class Menu {
       this.terminal.writeLine('');
     }
 
-    // Draw instructions at the bottom
+    // Add extra line before instructions
     this.terminal.writeLine('');
+
+    // Draw instructions at the bottom
     const instructions = "Use ↑↓ arrows to navigate, ENTER to select";
     const instructionsPadding = Math.floor((this.terminal.getCols() - instructions.length) / 2);
     const instructionsSpaces = ' '.repeat(instructionsPadding);
