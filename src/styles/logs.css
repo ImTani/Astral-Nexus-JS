@@ -1,0 +1,19 @@
+.log-entry {
+  font-size: 12px;
+  padding: 2px 4px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.log-timestamp {
+  color: #666;
+  margin-right: 6px;
+}
+
+.log-type-interaction { color: #4CAF50; }
+.log-type-inventory { color: #2196F3; }
+.log-type-profile { color: #9C27B0; }
+.log-type-system { color: #FFC107; }
+
+.log-entry:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
